@@ -5,8 +5,8 @@
     <groupId>by.javaguru</groupId>
     <artifactId>saga-pattern-spring-boot-demo</artifactId>
     <packaging>pom</packaging>
-    <name>Saga Orchestration Pattern</name>
-    <description>Saga Orchestration Pattern Spring Boot</description>
+    <name>Saga Orchestration Pattern Demo</name>
+    <description>Saga Orchestration Pattern Spring Boot Demo</description>
     <version>${revision}</version>
 
     <parent>
@@ -17,6 +17,7 @@
     </parent>
 
     <modules>
+        <module>core</module>
         <module>orders-service</module>
         <module>products-service</module>
         <module>payments-service</module>

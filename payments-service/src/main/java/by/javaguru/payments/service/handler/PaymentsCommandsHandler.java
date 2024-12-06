@@ -16,7 +16,7 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
 @Component
-@KafkaListener(topics="${payments.commands.topic.name}")
+@KafkaListener(topics = "${payments.commands.topic.name}")
 public class PaymentsCommandsHandler {
 
     private final PaymentService paymentService;
@@ -49,7 +49,7 @@ public class PaymentsCommandsHandler {
             PaymentFailedEvent paymentFailedEvent = new PaymentFailedEvent(command.getOrderId(),
                     command.getProductId(),
                     command.getProductQuantity());
-            kafkaTemplate.send(paymentEventsTopicName,paymentFailedEvent);
+            kafkaTemplate.send(paymentEventsTopicName, paymentFailedEvent);
         }
     }
 }
