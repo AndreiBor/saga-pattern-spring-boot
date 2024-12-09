@@ -6,6 +6,7 @@ import by.javaguru.core.dto.events.OrderCreatedEvent;
 import by.javaguru.core.types.OrderStatus;
 import by.javaguru.orders.dao.jpa.entity.OrderEntity;
 import by.javaguru.orders.dao.jpa.repository.OrderRepository;
+import by.javaguru.core.dto.events.OrderRejectedEvent;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -60,6 +61,16 @@ public class OrderServiceImpl implements OrderService {
         orderRepository.save(orderEntity);
         OrderApprovedEvent orderApprovedEvent = new OrderApprovedEvent(orderId);
         kafkaTemplate.send(ordersEventsTopicName, orderApprovedEvent);
+    }
+
+    @Override
+    public void rejectOrder(UUID orderId) {
+        OrderEntity orderEntity = orderRepository.findById(orderId).orElse(null);
+        orderEntity.setStatus(OrderStatus.REJECTED);
+        orderRepository.save(orderEntity);
+
+        OrderRejectedEvent orderRejectedEvent = new OrderRejectedEvent(orderId);
+        kafkaTemplate.send(ordersEventsTopicName, orderRejectedEvent);
     }
 
 }
