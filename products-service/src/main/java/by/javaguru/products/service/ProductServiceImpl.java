@@ -37,8 +37,13 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void cancelReservation(Product productToCancel, UUID orderId) {
-        ProductEntity productEntity = productRepository.findById(productToCancel.getId()).orElseThrow();
-        productEntity.setQuantity(productEntity.getQuantity() + productToCancel.getQuantity());
+        cancelReservation(productToCancel.getId(), productToCancel.getQuantity());
+    }
+
+    @Override
+    public void cancelReservation(UUID productId, int quantity) {
+        ProductEntity productEntity = productRepository.findById(productId).orElseThrow();
+        productEntity.setQuantity(productEntity.getQuantity() + quantity);
         productRepository.save(productEntity);
     }
 
