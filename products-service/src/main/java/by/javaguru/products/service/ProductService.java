@@ -9,5 +9,6 @@ public interface ProductService {
     List<Product> findAll();
     Product reserve(Product desiredProduct, UUID orderId);
     void cancelReservation(Product productToCancel, UUID orderId);
+    void cancelReservation(UUID productId, int quantity);
     Product save(Product product);
 }

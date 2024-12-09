@@ -1,9 +1,11 @@
 package by.javaguru.products.service.handler;
 
 import by.javaguru.core.dto.Product;
+import by.javaguru.core.dto.commands.RejectReservedProductCommand;
 import by.javaguru.core.dto.commands.ReserveProductCommand;
 import by.javaguru.core.dto.events.ProductReservationFailedEvent;
 import by.javaguru.core.dto.events.ProductReservedEvent;
+import by.javaguru.core.dto.events.ReserveProductRejectedEvent;
 import by.javaguru.products.service.ProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,4 +51,12 @@ public class ProductCommandsHandler {
             kafkaTemplate.send(productEventsTopicName, productReservationFailedEvent);
         }
     }
+
+   @KafkaHandler
+   public void handleCommand(@Payload RejectReservedProductCommand command) {
+      productService.cancelReservation(command.getProductId(), command.getProductQuantity());
+
+      var reserveProductRejectedEvent = new ReserveProductRejectedEvent(command.getOrderId());
+      kafkaTemplate.send(productEventsTopicName, reserveProductRejectedEvent);
+   }
 }
